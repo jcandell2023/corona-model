@@ -30,22 +30,25 @@
             type: 'line',
           },
           {
-            label: 'Line Data',
-            backgroundColor: 'rgba(255,0,0,.5)',
+            label: 'Current Threshold',
             data: lineData,
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderWidth: { left: 0, right: 0, bottom: 0, top: 1 },
+            borderColor: 'rgba(255,0,0,1)',
           },
           {
-            label: 'Limit',
-            backgroundColor: 'rgba(0,0,255,.5)',
+            label: 'Normal Threshold',
+
             data: limitData,
+            backgroundColor: 'rgba(0,0,0,0)',
+            borderWidth: { left: 0, right: 0, bottom: 0, top: 1 },
+            borderColor: 'rgba(0,200,0,1)',
           },
         ],
         labels,
       },
       options: {
-        animation: {
-          duration: 100,
-        },
+        legend: { position: 'top', labels: { usePointStyle: true } },
         scales: {
           xAxes: [
             {
