@@ -56,6 +56,7 @@
               position: 'bottom',
               labels,
               stacked: true,
+              scaleLabel: { labelString: 'State', display: true },
             },
           ],
           yAxes: [
@@ -63,6 +64,7 @@
               type: 'linear',
               position: 'left',
               stacked: true,
+              scaleLabel: { labelString: 'R0', display: true },
               ticks: {
                 suggestedMax: 5,
                 suggestedMin: 0,
