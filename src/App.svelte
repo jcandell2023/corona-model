@@ -32,25 +32,29 @@
     limits.push(data[i][2][0])
   }
 
-  let interval
+  let interval = null
 
   const playAnimation = () => {
-    interval = window.setInterval(() => {
-      if (day < 400) {
-        day++
-      } else {
-        window.clearInterval(interval)
-      }
-    }, 50)
+    if (!interval) {
+      interval = window.setInterval(() => {
+        if (day < 400) {
+          day++
+        } else {
+          window.clearInterval(interval)
+        }
+      }, 50)
+    }
   }
 
   const reset = () => {
     day = 1
     window.clearInterval(interval)
+    interval = null
   }
 
   const stop = () => {
     window.clearInterval(interval)
+    interval = null
   }
 </script>
 

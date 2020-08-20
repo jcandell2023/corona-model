@@ -58,7 +58,12 @@
         labels,
       },
       options: {
-        //tooltips: { enabled: false, custom: (tooltipModel) => {} },
+        tooltips: {
+          callbacks: {
+            label: (item, data) =>
+              data['datasets'][item.datasetIndex]['data'][item['index']].toFixed(2),
+          },
+        },
         legend: { position: 'top', labels: { usePointStyle: true } },
         scales: {
           xAxes: [
@@ -73,7 +78,7 @@
             {
               type: 'linear',
               position: 'left',
-              scaleLabel: { labelString: 'R0', display: true },
+              scaleLabel: { labelString: 'R\u2080', display: true },
               ticks: {
                 suggestedMax: 4,
                 suggestedMin: 0,
