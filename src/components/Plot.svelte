@@ -75,16 +75,36 @@
               position: 'left',
               scaleLabel: { labelString: 'R0', display: true },
               ticks: {
-                suggestedMax: 5,
+                suggestedMax: 4,
                 suggestedMin: 0,
                 stepSize: 0.5,
               },
             },
-            /*{
-              type: 'linear',
+            {
               position: 'right',
               scaleLabel: { labelString: '% Susceptible', display: true },
-            },*/
+              ticks: {
+                min: 0,
+                max: 4,
+                stepSize: 0.5,
+                callback: (label, index, labels) => {
+                  switch (label) {
+                    case 1:
+                      return 100
+                    case 1.5:
+                      return 66.7
+                    case 2:
+                      return 50
+                    case 2.5:
+                      return 40
+                    case 3:
+                      return 33.3
+                    case 4:
+                      return 25
+                  }
+                },
+              },
+            },
           ],
         },
       },
@@ -98,4 +118,4 @@
   })
 </script>
 
-<canvas id="chart" />
+<canvas id="chart" class="col-lg-10 offset-lg-1" />

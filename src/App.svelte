@@ -61,11 +61,13 @@
 <div class="container">
   <h1 class="display-4 text-center">Corona Virus Model</h1>
   <h3 class="text-center">{date.toLocaleDateString()}</h3>
-  <Plot
-    circleData={dotData[day - 1]}
-    lineData={lineData[day - 1]}
-    {labels}
-    limitData={limits} />
+  <div class="row">
+    <Plot
+      circleData={dotData[day - 1]}
+      lineData={lineData[day - 1]}
+      {labels}
+      limitData={limits} />
+  </div>
   <div class="row">
     <p class="col-lg-1">{date.toLocaleDateString()}</p>
     <input
