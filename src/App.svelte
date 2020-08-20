@@ -60,7 +60,16 @@
 
 <div class="container">
   <h1 class="display-4 text-center">Corona Virus Model</h1>
-  <h3 class="text-center">{date.toLocaleDateString()}</h3>
+  <div class="row">
+    <h3 class="offset-md-2 text-center col-md-5">{date.toLocaleDateString()}</h3>
+    <div class="btn-group col-md-2" role="group">
+      <button class="btn btn-success" on:click={playAnimation}>Play</button>
+      <button class="btn btn-warning" on:click={stop}>Pause</button>
+      <button class="btn btn-danger" on:click={reset}>Reset</button>
+    </div>
+
+  </div>
+
   <div class="row">
     <Plot
       circleData={dotData[day - 1]}
@@ -77,7 +86,5 @@
       max="400"
       bind:value={day} />
   </div>
-  <button class="btn btn-success" on:click={playAnimation}>Play</button>
-  <button class="btn btn-warning" on:click={stop}>Pause</button>
-  <button class="btn btn-danger" on:click={reset}>Reset</button>
+
 </div>
