@@ -1,8 +1,12 @@
 {
   "version": 3,
   "file": "bundle.css",
-  "sources": [],
-  "sourcesContent": [],
+  "sources": [
+    "..\\..\\App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import Chart from 'chart.js'\n  import data from './data/newData'\n  import Plot from './components/Plot.svelte'\n  import { onMount } from 'svelte'\n\n  const millisDay = 86400000\n  let day = 1\n  const startDate = new Date(2020, 1, 15)\n  let date = new Date()\n  $: {\n    date.setTime(startDate.getTime() + millisDay * (day - 1))\n    date = date\n  }\n\n  let plotData = data[1]\n  let labels = data[0]\n  let limits = plotData[0][1]\n\n  let interval = null\n\n  const playAnimation = () => {\n    if (!interval) {\n      interval = window.setInterval(() => {\n        if (day < 400) {\n          day++\n        } else {\n          window.clearInterval(interval)\n        }\n      }, 50)\n    }\n  }\n\n  const reset = () => {\n    day = 1\n    window.clearInterval(interval)\n    interval = null\n  }\n\n  const stop = () => {\n    window.clearInterval(interval)\n    interval = null\n  }\n</script>\n\n<style>\n  .img-container {\n    padding: 0;\n  }\n</style>\n\n<div class=\"container\">\n  <h1 class=\"display-4 text-center\">Corona Virus Model</h1>\n  <div class=\"row\" />\n\n  <h3 class=\"text-center\">{date.toLocaleDateString()}</h3>\n\n  <div class=\"row\">\n    <div class=\"col-md-3 img-container\">\n      <img src=\"img/R0_params.png\" alt=\"Explanation\" class=\"img-fluid\" />\n    </div>\n\n    <Plot\n      circleData={plotData[day - 1][0]}\n      lineData={plotData[day - 1][1]}\n      {labels}\n      limitData={limits} />\n  </div>\n  <div class=\"row\">\n    <p class=\"col-lg-1 text-center\">{date.toLocaleDateString()}</p>\n    <input\n      class=\"custom-range col-lg-8\"\n      type=\"range\"\n      min=\"1\"\n      max=\"400\"\n      bind:value={day} />\n    <div class=\"btn-group col-lg-2\" role=\"group\">\n      <button class=\"btn btn-success btn-sm\" on:click={playAnimation}>Play</button>\n      <button class=\"btn btn-warning btn-sm\" on:click={stop}>Pause</button>\n      <button class=\"btn btn-danger btn-sm\" on:click={reset}>Reset</button>\n    </div>\n  </div>\n\n</div>\n"
+  ],
   "names": [],
-  "mappings": ""
+  "mappings": "AA8CE,cAAc,cAAC,CAAC,AACd,OAAO,CAAE,CAAC,AACZ,CAAC"
 }

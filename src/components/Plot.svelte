@@ -5,6 +5,15 @@
   export let labels = null
   export let limitData = null
 
+  $: circleData = circleData.map((val) => 1 / (1 - val))
+
+  const circleColor = []
+  const lineColor = []
+  for (let i = 0; i < 20; i++) {
+    circleColor.push('blue')
+    lineColor.push('green')
+  }
+
   let ctx
   let chart
 
@@ -13,6 +22,19 @@
     renderChart()
   })
 
+  const changeColors = () => {
+    const [circle, current, limit] = chart.data.datasets
+    for (let i = 0; i < circle.data.length; i++) {
+      if (current.data[i] < 1.15) {
+        current.pointBorderColor[i] = 'red'
+      } else if (current.data[i] < limit.data[i]) {
+        current.pointBorderColor[i] = 'orange'
+      } else {
+        current.pointBorderColor[i] = 'green'
+      }
+    }
+  }
+
   const renderChart = () => {
     if (chart) chart.destroy()
     chart = new Chart(ctx, {
@@ -20,10 +42,10 @@
       data: {
         datasets: [
           {
-            label: 'Circle Data',
-            pointBackgroundColor: 'blue',
-            pointBorderColor: 'blue',
+            label: 'Susceptible %',
+            pointBackgroundColor: circleColor,
             pointRadius: 10,
+            pointHoverRadius: 9,
             backgroundColor: 'rgba(255,255,255,0)',
             borderColor: 'rgba(255,255,255,0)',
             data: circleData,
@@ -31,10 +53,11 @@
             type: 'line',
           },
           {
-            label: 'Current Threshold',
-            pointBackgroundColor: 'rgba(255,0,0,1)',
-            pointBorderColor: 'rgba(255,0,0,1)',
-            pointRadius: 15,
+            label: 'Current R\u2080',
+            pointBorderColor: lineColor,
+            pointRadius: 10,
+            pointHoverRadius: 9,
+            pointHoverBorderWidth: 2,
             borderWidth: 3,
             backgroundColor: 'rgba(255,255,255,0)',
             borderColor: 'rgba(255,255,255,0)',
@@ -43,10 +66,12 @@
             type: 'line',
           },
           {
-            label: 'Normal Threshold',
-            pointBackgroundColor: 'rgba(0,200,0,1)',
-            pointBorderColor: 'rgba(0,200,0,1)',
-            pointRadius: 15,
+            label: 'Old Normal R\u2080',
+            pointBackgroundColor: 'green',
+            pointBorderColor: 'green',
+            pointRadius: 10,
+            pointHoverRadius: 9,
+            pointHoverBorderWidth: 2,
             borderWidth: 3,
             backgroundColor: 'rgba(255,255,255,0)',
             borderColor: 'rgba(255,255,255,0)',
@@ -119,8 +144,9 @@
   afterUpdate(() => {
     chart.data.datasets[0].data = circleData
     chart.data.datasets[1].data = lineData
+    changeColors()
     chart.update()
   })
 </script>
 
-<canvas id="chart" class="col-lg-10 offset-lg-1" />
+<canvas id="chart" class="col-md-9" />

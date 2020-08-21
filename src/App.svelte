@@ -1,36 +1,21 @@
 <script>
   import Chart from 'chart.js'
-  import data from './data/data'
+  import data from './data/newData'
   import Plot from './components/Plot.svelte'
+  import { onMount } from 'svelte'
 
   const millisDay = 86400000
   let day = 1
-  const startDate = new Date(2020, 1, 1)
+  const startDate = new Date(2020, 1, 15)
   let date = new Date()
   $: {
     date.setTime(startDate.getTime() + millisDay * (day - 1))
     date = date
   }
 
-  let dotData = []
-  let lineData = []
-  for (let d = 0; d < 400; d++) {
-    let dayData1 = []
-    let dayData2 = []
-    for (let i = 0; i < data.length; i++) {
-      dayData1.push(1 / (1 - data[i][1][d]))
-      dayData2.push(data[i][2][d])
-    }
-    dotData.push(dayData1)
-    lineData.push(dayData2)
-  }
-
-  let labels = []
-  let limits = []
-  for (let i = 0; i < data.length; i++) {
-    labels.push(data[i][0])
-    limits.push(data[i][2][0])
-  }
+  let plotData = data[1]
+  let labels = data[0]
+  let limits = plotData[0][1]
 
   let interval = null
 
@@ -59,36 +44,41 @@
 </script>
 
 <style>
-
+  .img-container {
+    padding: 0;
+  }
 </style>
 
 <div class="container">
   <h1 class="display-4 text-center">Corona Virus Model</h1>
+  <div class="row" />
+
+  <h3 class="text-center">{date.toLocaleDateString()}</h3>
+
   <div class="row">
-    <h3 class="offset-md-2 text-center col-md-5">{date.toLocaleDateString()}</h3>
-    <div class="btn-group col-md-2" role="group">
-      <button class="btn btn-success" on:click={playAnimation}>Play</button>
-      <button class="btn btn-warning" on:click={stop}>Pause</button>
-      <button class="btn btn-danger" on:click={reset}>Reset</button>
+    <div class="col-md-3 img-container">
+      <img src="img/R0_params.png" alt="Explanation" class="img-fluid" />
     </div>
 
-  </div>
-
-  <div class="row">
     <Plot
-      circleData={dotData[day - 1]}
-      lineData={lineData[day - 1]}
+      circleData={plotData[day - 1][0]}
+      lineData={plotData[day - 1][1]}
       {labels}
       limitData={limits} />
   </div>
   <div class="row">
-    <p class="col-lg-1">{date.toLocaleDateString()}</p>
+    <p class="col-lg-1 text-center">{date.toLocaleDateString()}</p>
     <input
-      class="custom-range col-lg-11"
+      class="custom-range col-lg-8"
       type="range"
       min="1"
       max="400"
       bind:value={day} />
+    <div class="btn-group col-lg-2" role="group">
+      <button class="btn btn-success btn-sm" on:click={playAnimation}>Play</button>
+      <button class="btn btn-warning btn-sm" on:click={stop}>Pause</button>
+      <button class="btn btn-danger btn-sm" on:click={reset}>Reset</button>
+    </div>
   </div>
 
 </div>
