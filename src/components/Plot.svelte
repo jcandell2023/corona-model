@@ -23,7 +23,7 @@
   })
 
   const changeColors = () => {
-    const [circle, current, limit] = chart.data.datasets
+    const [current, limit, circle] = chart.data.datasets
     for (let i = 0; i < circle.data.length; i++) {
       if (current.data[i] < 1.15) {
         current.pointBorderColor[i] = 'red'
@@ -42,19 +42,9 @@
       data: {
         datasets: [
           {
-            label: 'Susceptible %',
-            pointBackgroundColor: circleColor,
-            pointRadius: 10,
-            pointHoverRadius: 9,
-            backgroundColor: 'rgba(255,255,255,0)',
-            borderColor: 'rgba(255,255,255,0)',
-            data: circleData,
-            pointStyle: 'circle',
-            type: 'line',
-          },
-          {
             label: 'Current R\u2080',
             pointBorderColor: lineColor,
+            pointBackgroundColor: lineColor,
             pointRadius: 10,
             pointHoverRadius: 9,
             pointHoverBorderWidth: 2,
@@ -79,11 +69,23 @@
             pointStyle: 'line',
             type: 'line',
           },
+          {
+            label: 'Susceptible %',
+            pointBackgroundColor: circleColor,
+            pointRadius: 10,
+            pointHoverRadius: 9,
+            backgroundColor: 'rgba(255,255,255,0)',
+            borderColor: 'rgba(255,255,255,0)',
+            data: circleData,
+            pointStyle: 'circle',
+            type: 'line',
+          },
         ],
         labels,
       },
       options: {
         tooltips: {
+          mode: 'index',
           callbacks: {
             label: (item, data) =>
               data['datasets'][item.datasetIndex]['data'][item['index']].toFixed(2),
@@ -142,8 +144,8 @@
   }
 
   afterUpdate(() => {
-    chart.data.datasets[0].data = circleData
-    chart.data.datasets[1].data = lineData
+    chart.data.datasets[2].data = circleData
+    chart.data.datasets[0].data = lineData
     changeColors()
     chart.update()
   })
