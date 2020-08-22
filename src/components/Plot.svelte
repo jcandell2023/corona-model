@@ -4,6 +4,7 @@
   export let lineData = null
   export let labels = null
   export let limitData = null
+  export let min = null
 
   $: circleData = circleData.map((val) => 1 / (1 - val))
 
@@ -23,11 +24,11 @@
   })
 
   const changeColors = () => {
-    const [current, limit, circle] = chart.data.datasets
-    for (let i = 0; i < circle.data.length; i++) {
-      if (current.data[i] < 1.15) {
+    const [, current] = chart.data.datasets
+    for (let i = 0; i < current.data.length; i++) {
+      if (lineData[i] === min[i]) {
         current.pointBorderColor[i] = 'red'
-      } else if (current.data[i] < limit.data[i]) {
+      } else if (lineData[i] < limitData[i]) {
         current.pointBorderColor[i] = 'orange'
       } else {
         current.pointBorderColor[i] = 'green'
@@ -41,6 +42,20 @@
       type: 'bar',
       data: {
         datasets: [
+          {
+            label: 'Baseline R\u2080',
+            pointBackgroundColor: 'green',
+            pointBorderColor: 'green',
+            pointRadius: 10,
+            pointHoverRadius: 9,
+            pointHoverBorderWidth: 2,
+            borderWidth: 3,
+            backgroundColor: 'rgba(255,255,255,0)',
+            borderColor: 'rgba(255,255,255,0)',
+            data: limitData,
+            pointStyle: 'line',
+            type: 'line',
+          },
           {
             label: 'Current R\u2080',
             pointBorderColor: lineColor,
@@ -56,18 +71,26 @@
             type: 'line',
           },
           {
-            label: 'Old Normal R\u2080',
-            pointBackgroundColor: 'green',
-            pointBorderColor: 'green',
+            label: 'New Normal R\u2080',
+            pointStyle: 'line',
+            type: 'line',
+            pointBorderColor: 'orange',
+            pointBorderWidth: 3,
+          },
+          {
+            label: 'Crisis R\u2080',
+            pointStyle: 'line',
+            type: 'line',
+            pointBorderColor: 'red',
+            pointBackgroundColor: 'red',
+            pointBorderWidth: 3,
+            data: min,
             pointRadius: 10,
             pointHoverRadius: 9,
             pointHoverBorderWidth: 2,
             borderWidth: 3,
             backgroundColor: 'rgba(255,255,255,0)',
             borderColor: 'rgba(255,255,255,0)',
-            data: limitData,
-            pointStyle: 'line',
-            type: 'line',
           },
           {
             label: 'Susceptible %',
@@ -91,7 +114,16 @@
               data['datasets'][item.datasetIndex]['data'][item['index']].toFixed(2),
           },
         },
-        legend: { position: 'top', labels: { usePointStyle: true } },
+        legend: {
+          position: 'top',
+          display: true,
+          labels: {
+            filter: (item, data) => {
+              return item.text != 'Current R\u2080'
+            },
+            usePointStyle: true,
+          },
+        },
         scales: {
           xAxes: [
             {
@@ -144,8 +176,8 @@
   }
 
   afterUpdate(() => {
-    chart.data.datasets[2].data = circleData
-    chart.data.datasets[0].data = lineData
+    chart.data.datasets[4].data = circleData
+    chart.data.datasets[1].data = lineData
     changeColors()
     chart.update()
   })
