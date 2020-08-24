@@ -74,8 +74,7 @@
 </style>
 
 <div class="container">
-  <h1 class="display-4 text-center">Corona Virus Model</h1>
-  <div class="row" />
+  <!-- <h1 class="display-4 text-center">Corona Virus Model</h1> -->
 
   <h3 class="text-center">{date.toLocaleDateString()}</h3>
 
@@ -98,7 +97,10 @@
       type="range"
       min="0"
       max="399"
-      bind:value={day} />
+      bind:value={day}
+      data-toggle="tooltip"
+      data-placement="top"
+      title={date.toLocaleDateString()} />
     <div class="btn-group col-lg-2" role="group">
       <button class="btn btn-success btn-sm" on:click={playAnimation}>Play</button>
       <button class="btn btn-warning btn-sm" on:click={stop}>Pause</button>
@@ -107,3 +109,12 @@
   </div>
 
 </div>
+<hr />
+<footer>
+  <div class="container">
+    <p class="text-center">
+      Want to see where the data is coming from?
+      <a href="http://yetanotherseirmodel.com/" target="_blank">Click Here</a>
+    </p>
+  </div>
+</footer>
