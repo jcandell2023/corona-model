@@ -1,120 +1,19 @@
 <script>
-  import Chart from 'chart.js'
-  import data from './data/newData'
-  import Plot from './components/Plot.svelte'
-  import { onMount } from 'svelte'
-
-  const millisDay = 86400000
-  let day = 0
-  const startDate = new Date(2020, 1, 15)
-  let date = new Date()
-  $: {
-    date.setTime(startDate.getTime() + millisDay * day)
-    date = date
-  }
-
-  let plotData = data[1]
-  let labels = data[0]
-  let limits = plotData[0][1]
-  let min = []
-  let minData = [...limits]
-
-  for (let s = 0; s < 20; s++) {
-    let curMin = limits[s]
-    let mindex = 0
-    for (let d = 0; d < 400; d++) {
-      if (plotData[d][1][s] < curMin) {
-        curMin = plotData[d][1][s]
-        mindex = d
-      }
-    }
-    min.push({ min: curMin, ind: mindex })
-  }
-
-  $: {
-    for (let i = 0; i < min.length; i++) {
-      if (min[i].ind <= day) {
-        minData[i] = min[i].min
-      } else {
-        minData[i] = limits[i]
-      }
-    }
-  }
-
-  let interval = null
-
-  const playAnimation = () => {
-    if (!interval) {
-      interval = window.setInterval(() => {
-        if (day < 399) {
-          day++
-        } else {
-          window.clearInterval(interval)
-        }
-      }, 100)
-    }
-  }
-
-  const reset = () => {
-    day = 0
-    window.clearInterval(interval)
-    interval = null
-  }
-
-  const stop = () => {
-    window.clearInterval(interval)
-    interval = null
-  }
+  import data from './data/data'
+  import Intro from './components/Intro.svelte'
+  import Info from './components/Info.svelte'
+  import Graph from './components/Graph.svelte'
+  import Footer from './components/Footer.svelte'
 </script>
 
 <style>
-  .img-container {
-    padding: 0;
-  }
+
 </style>
 
-<div class="container">
-  <!-- <h1 class="display-4 text-center">Corona Virus Model</h1> -->
-
-  <h3 class="text-center">{date.toLocaleDateString()}</h3>
-
-  <div class="row">
-    <div class="col-md-3 img-container">
-      <img src="img/R0_params.png" alt="Explanation" class="img-fluid" />
-    </div>
-
-    <Plot
-      circleData={plotData[day][0]}
-      lineData={plotData[day][1]}
-      {labels}
-      min={minData}
-      limitData={limits} />
-  </div>
-  <div class="row">
-    <p class="col-lg-1 text-left">{date.toLocaleDateString()}</p>
-    <input
-      class="custom-range col-lg-8"
-      type="range"
-      min="0"
-      max="399"
-      bind:value={day}
-      data-toggle="tooltip"
-      data-placement="top"
-      title={date.toLocaleDateString()} />
-    <div class="btn-group col-lg-2" role="group">
-      <button class="btn btn-success btn-sm" on:click={playAnimation}>Play</button>
-      <button class="btn btn-warning btn-sm" on:click={stop}>Pause</button>
-      <button class="btn btn-danger btn-sm" on:click={reset}>Reset</button>
-    </div>
-  </div>
-
-</div>
-<hr />
-<footer>
-  <div class="container">
-    <p class="text-center">
-      Want to see where the data is coming from?
-      <a href="http://yetanotherseirmodel.com/" target="_blank">Click Here</a>
-    </p>
-  </div>
-</footer>
+<Intro />
+<hr class="m-0" />
+<Info />
+<hr class="m-0" />
+<Graph {data} />
+<hr class="m-0" />
+<Footer />

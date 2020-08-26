@@ -1,16 +1,21 @@
 <script>
   import { afterUpdate, onMount } from 'svelte'
+  import Chart from 'chart.js'
   export let circleData = null
   export let lineData = null
   export let labels = null
   export let limitData = null
-  export let min = null
+  export let minData = null
+  export let id = 'chart'
+  export let parsed = false
 
-  $: circleData = circleData.map((val) => 1 / (1 - val))
+  $: if (!parsed) {
+    circleData = circleData.map((val) => 1 / (1 - val))
+  }
 
   const circleColor = []
   const lineColor = []
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < circleData.length; i++) {
     circleColor.push('blue')
     lineColor.push('green')
   }
@@ -19,14 +24,14 @@
   let chart
 
   onMount(() => {
-    ctx = document.getElementById('chart')
+    ctx = document.getElementById(id)
     renderChart()
   })
 
   const changeColors = () => {
     const [, current] = chart.data.datasets
     for (let i = 0; i < current.data.length; i++) {
-      if (lineData[i] === min[i]) {
+      if (lineData[i] === minData[i]) {
         current.pointBorderColor[i] = 'red'
       } else if (lineData[i] < limitData[i]) {
         current.pointBorderColor[i] = 'orange'
@@ -37,13 +42,12 @@
   }
 
   const renderChart = () => {
-    if (chart) chart.destroy()
     chart = new Chart(ctx, {
       type: 'bar',
       data: {
         datasets: [
           {
-            label: 'Baseline R\u2080',
+            label: 'Old Normal R\u2080',
             pointBackgroundColor: 'green',
             pointBorderColor: 'green',
             pointRadius: 10,
@@ -84,7 +88,7 @@
             pointBorderColor: 'red',
             pointBackgroundColor: 'red',
             pointBorderWidth: 3,
-            data: min,
+            data: minData,
             pointRadius: 10,
             pointHoverRadius: 9,
             pointHoverBorderWidth: 2,
@@ -109,18 +113,47 @@
       options: {
         tooltips: {
           mode: 'index',
+          position: 'nearest',
+          titleAlign: 'center',
+          footerAlign: 'center',
+          filter: (item, data) => {
+            if (item.datasetIndex == 3) {
+              return lineData[item.index] != minData[item.index]
+            }
+            return true
+          },
           callbacks: {
-            label: (item, data) =>
-              data['datasets'][item.datasetIndex]['data'][item['index']].toFixed(2),
+            label: (item, data) => {
+              if (item.datasetIndex == 4) {
+                return (
+                  (
+                    100 / data['datasets'][item.datasetIndex]['data'][item['index']]
+                  ).toFixed(2) + '%'
+                )
+              }
+              return data['datasets'][item.datasetIndex]['data'][item['index']].toFixed(2)
+            },
+            footer: (items, data) => {
+              const ind = items[0].index
+              if (circleData[ind] < lineData[ind]) {
+                return 'Because the susceptible population is\nbelow the current new normal R\u2080, the\neffective R\u2080 is greater than 1 so the\nstate is at risk of exponential spread.'
+              } else if (
+                circleData[ind] >= lineData[ind] &&
+                circleData[ind] < limitData[ind]
+              ) {
+                return 'Although the susceptible population is\nabove the current new normal R\u2080 slowing\nthe current spread, the state has not\nreached the herd immunity threshold and\nmay be at risk of a future outbreak.'
+              } else if (circleData[ind] >= limitData[ind]) {
+                return 'This state has surpassed the old normal\nR\u2080 meaning they likely have acheived herd\nimmunity. A future outbreak here is unlikely.'
+              }
+              return ''
+            },
           },
         },
         legend: {
           position: 'top',
           display: true,
           labels: {
-            filter: (item, data) => {
-              return item.text != 'Current R\u2080'
-            },
+            filter: (item, ind, data) => item.text != 'Current R\u2080',
             usePointStyle: true,
           },
         },
@@ -183,4 +216,4 @@
   })
 </script>
 
-<canvas id="chart" class="col-md-9" />
+<canvas {id} class="col-xl-10 offset-xl-1" />
