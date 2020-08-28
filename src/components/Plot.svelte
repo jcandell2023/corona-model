@@ -1,6 +1,7 @@
 <script>
   import { afterUpdate, onMount } from 'svelte'
   import Chart from 'chart.js'
+  import { text } from 'svelte/internal'
   export let circleData = null
   export let lineData = null
   export let labels = null
@@ -11,6 +12,32 @@
 
   $: if (!parsed) {
     circleData = circleData.map((val) => 1 / (1 - val))
+  }
+
+  const textWrap = (text, length) => {
+    if (text.length <= length) {
+      return text
+    }
+
+    let wrap = []
+    text = text.split(' ')
+    let line = []
+    let lineLen = 0
+
+    for (let i = 0; i < text.length; i++) {
+      if (lineLen + text[i].length < length) {
+        line.push(text[i])
+        lineLen += text[i].length + 1
+      } else {
+        wrap.push(line.join(' '))
+        line = []
+        lineLen = 0
+        line.push(text[i])
+        lineLen += text[i].length
+      }
+    }
+    wrap.push(line.join(' '))
+    return wrap
   }
 
   const circleColor = []
@@ -136,14 +163,35 @@
             footer: (items, data) => {
               const ind = items[0].index
               if (circleData[ind] < lineData[ind]) {
-                return 'Because the susceptible population is\nbelow the current new normal R\u2080, the\neffective R\u2080 is greater than 1 so the\nstate is at risk of exponential spread.'
+                let text = `The current effective R for this outbreak is ${
+                  lineData[ind]
+                }*${(1 / circleData[ind]).toFixed(2)} = ${(
+                  lineData[ind] / circleData[ind]
+                ).toFixed(
+                  2
+                )}. Since this number is above 1, this location is still predicted to have exponential spread.`
+                return textWrap(text, 45)
               } else if (
                 circleData[ind] >= lineData[ind] &&
                 circleData[ind] < limitData[ind]
               ) {
-                return 'Although the susceptible population is\nabove the current new normal R\u2080 slowing\nthe current spread, the state has not\nreached the herd immunity threshold and\nmay be at risk of a future outbreak.'
+                let text = `The current effective R for this outbreak is ${
+                  lineData[ind]
+                }*${(1 / circleData[ind]).toFixed(2)} = ${(
+                  lineData[ind] / circleData[ind]
+                ).toFixed(
+                  2
+                )}. Since this number is below 1, this location is expected to be past its peak in new cases. However, if we went back to “old normal” interactions, the effective R would still be greater than 1.`
+                return textWrap(text, 45)
               } else if (circleData[ind] >= limitData[ind]) {
-                return 'This state has surpassed the old normal\nR\u2080 meaning they likely have acheived herd\nimmunity. A future outbreak here is unlikely.'
+                let text = `In this location, even if “old normal” interactions were resumed, the effective R, ${
+                  limitData[ind]
+                }*${(1 / circleData[ind]).toFixed(2)} = ${(
+                  limitData[ind] / circleData[ind]
+                ).toFixed(
+                  2
+                )} is less than 1. This location has passed the herd immunity threshold and can move toward interactions similar to those during pre-pandemic times without risking a new exponential growth in cases.`
+                return textWrap(text, 45)
               }
               return ''
             },

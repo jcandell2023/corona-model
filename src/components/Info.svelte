@@ -92,26 +92,48 @@
           who are not immune can still contract the disease, but the disease likely will
           not have another ouotbreak where cases grow rapidly and out of control.
         </p>
-      </div> 
-      <hr class="col-12" /> -->
+      </div>
+      <hr class="col-12" />-->
       <div class="col-12">
         <h2 class="text-center display-4 mb-4">How to interpret this graphic</h2>
       </div>
-      <div class="col-md-5 col-lg-4 col-xl-3">
+      <div class="col-md-5 col-lg-4">
         <img src="img/R0_params.png" alt="Example plot" class="img-fluid" />
       </div>
-      <div class="col-md-7 col-lg-8 col-xl-9">
+      <div class="col-md-7 col-lg-8">
+        <!-- <p class="text-justified">
+          To understand our herd immunity status, we have to think in terms of R&#8320;,
+          which is a measure of how many people each infected person passes the virus on
+          to. If R&#8320; were exactly 1, then the epidemic would neither grow or shrink,
+          since each infected person infect one other person before they were no longer
+          infectious. R&#8320; &gt; 1 leads to an exponentially rising number of cases,
+          and below 1, the epidemic will fade away. But if some fraction of the people
+          that get exposed to the virus are no longer susceptible, the actual number of
+          new infections will be reduced from the full R&#8320;. For example, if 50% of
+          the population is susceptible then only half of the number of exposures implied
+          by R&#8320; will lead to new infections. If few enough people are still
+          susceptible to bring these actual new infections to 1 or less, we have achieved
+          herd immunity. So, if we can estimate R&#8320; and the remaining population
+          susceptible, then we can determine our herd immunity status. Sounds simple… but
+          it’s not! We need to predict these parameters from the testing and data we
+          collect.
+        </p> -->
         <p class="text-justified">
-          Our graph has 3 lines and 1 circle per state. Each line represents one of the
-          values in this example plot and the circle represents the percent of the
-          population still susceptible in the state. The green line represents the initial
-          R&#8320; in the state, refered to as the "Old Normal R&#8320;". The red line
-          represents the R&#8320; during the lockdown in the state, referred to as the
-          "Crisis R&#8320;". Finally, the orange line represents the current R&#8320; in
-          the state, refered to as the "New Normal R&#8320;" In our graph, the "old
-          normal" and "crisis" R&#8320; are constant, and the "new normal" R&#8320; shows
-          how a state is adjusting their guidelines with a higher R&#8320; meaning they
-          are more open.
+          The number of people we pass a virus to (R&#8320;) is directly related to the
+          amount of interaction we have with others. At the beginning of the epidemic, our
+          society was in its natural highly interactive “old normal” state (shown in green
+          in the figure), and R&#8320; was high. In response to the danger and uncertainty
+          of the virus, we drastically lowered our level of interaction, and R&#8320;
+          became far lower (red region), We then began to relax restrictions and settled
+          into a “new normal R&#8320;”, and eventually, we hope to return to our “old
+          normal” levels. Similarly, as the virus progresses, the number of susceptible
+          people remaining, which started at 100%, is gradually being reduced. Using
+          standard epidemiological models coupled with the case and fatality data for a
+          given location, we can estimate these R&#8320; levels and timing of the
+          transitions, as well as how many susceptible people remain.
+        </p>
+        <p class="text-justified">
+          Our graphic below shows you the results of this work.
         </p>
       </div>
     </div>

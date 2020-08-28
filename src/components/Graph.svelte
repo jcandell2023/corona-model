@@ -63,6 +63,14 @@
     window.clearInterval(interval)
     interval = null
   }
+
+  const toToday = () => {
+    const today = new Date()
+    const dif = today.getTime() - startDate.getTime()
+    day = Math.floor(dif / millisDay)
+    window.clearInterval(interval)
+    interval = null
+  }
 </script>
 
 <style>
@@ -103,6 +111,7 @@
         <button class="btn btn-outline-dark btn-sm" on:click={() => reset(399)}>
           <i class="material-icons">fast_forward</i>
         </button>
+        <button class="btn btn-success btn-sm" on:click={toToday}>Today</button>
       </div>
     </div>
   </div>
