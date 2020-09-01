@@ -102,12 +102,15 @@
         <button class="btn btn-outline-dark btn-sm" on:click={() => reset(0)}>
           <i class="material-icons">fast_rewind</i>
         </button>
-        <button class="btn btn-outline-dark btn-sm" on:click={playAnimation}>
-          <i class="material-icons">play_arrow</i>
-        </button>
-        <button class="btn btn-outline-dark btn-sm" on:click={stop}>
-          <i class="material-icons">pause</i>
-        </button>
+        {#if interval}
+          <button class="btn btn-outline-dark btn-sm" on:click={stop}>
+            <i class="material-icons">pause</i>
+          </button>
+        {:else}
+          <button class="btn btn-outline-dark btn-sm" on:click={playAnimation}>
+            <i class="material-icons">play_arrow</i>
+          </button>
+        {/if}
         <button class="btn btn-outline-dark btn-sm" on:click={() => reset(399)}>
           <i class="material-icons">fast_forward</i>
         </button>

@@ -170,7 +170,7 @@
                 ).toFixed(
                   2
                 )}. Since this number is above 1, this location is still predicted to have exponential spread.`
-                return textWrap(text, 45)
+                return textWrap(text, 42)
               } else if (
                 circleData[ind] >= lineData[ind] &&
                 circleData[ind] < limitData[ind]
@@ -182,7 +182,7 @@
                 ).toFixed(
                   2
                 )}. Since this number is below 1, this location is expected to be past its peak in new cases. However, if we went back to “old normal” interactions, the effective R would still be greater than 1.`
-                return textWrap(text, 45)
+                return textWrap(text, 42)
               } else if (circleData[ind] >= limitData[ind]) {
                 let text = `In this location, even if “old normal” interactions were resumed, the effective R, ${
                   limitData[ind]
@@ -191,7 +191,7 @@
                 ).toFixed(
                   2
                 )} is less than 1. This location has passed the herd immunity threshold and can move toward interactions similar to those during pre-pandemic times without risking a new exponential growth in cases.`
-                return textWrap(text, 45)
+                return textWrap(text, 46)
               }
               return ''
             },
