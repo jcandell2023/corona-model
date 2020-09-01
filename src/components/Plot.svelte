@@ -144,8 +144,10 @@
           titleAlign: 'center',
           footerAlign: 'center',
           filter: (item, data) => {
-            if (item.datasetIndex == 3) {
-              return lineData[item.index] != minData[item.index]
+            if (item.datasetIndex == 1) {
+              return lineData[item.index] !== minData[item.index]
+            } else if (item.datasetIndex === 3) {
+              return minData[item.index] !== limitData[item.index]
             }
             return true
           },
