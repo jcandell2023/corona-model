@@ -258,12 +258,13 @@
     })
   }
 
-  afterUpdate(() => {
+  $: {
     chart.data.datasets[4].data = circleData
     chart.data.datasets[1].data = lineData
+    chart.data.datasets[3].data = minData
     changeColors()
     chart.update()
-  })
+  }
 </script>
 
 <canvas {id} class="col-xl-10 offset-xl-1" />
