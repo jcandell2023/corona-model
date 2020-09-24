@@ -1,7 +1,6 @@
 <script>
   import { afterUpdate, onMount } from 'svelte'
   import Chart from 'chart.js'
-  import { text } from 'svelte/internal'
   export let circleData = null
   export let lineData = null
   export let labels = null

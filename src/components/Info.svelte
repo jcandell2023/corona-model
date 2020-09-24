@@ -1,11 +1,3 @@
-<script>
-  import ExamplePlot from './ExamplePlot.svelte'
-</script>
-
-<style>
-
-</style>
-
 <div class="bg-light py-3" id="info">
   <div class="container">
     <!-- <h4 class="text-center display-4 mb-4">What is all of this?</h4> -->

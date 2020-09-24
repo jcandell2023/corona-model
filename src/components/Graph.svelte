@@ -80,6 +80,10 @@
 <div id="graph" class="py-3">
   <div class="container">
     <h3 class="text-center">{date.toLocaleDateString()}</h3>
+    <select name="states" id="stateSelect" multiple>
+      <option value="ma">MA</option>
+      <option value="ny">NY</option>
+    </select>
     <Plot
       parsed
       circleData={plotData[day][0]}
